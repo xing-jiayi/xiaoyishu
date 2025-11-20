@@ -17,7 +17,7 @@
 
   <!-- 子模块管理 -->
   <modules>
-    <module>xiaoyishu-auth</module>
+    <module>xiaoyi-auth</module>
     <module>xiaoyi-framework</module>
   </modules>
 

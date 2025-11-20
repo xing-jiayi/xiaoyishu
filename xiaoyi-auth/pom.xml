@@ -13,7 +13,7 @@
 	<!-- 指定打包方式 -->
 	<packaging>jar</packaging>
 
-	<artifactId>xiaoyishu-auth</artifactId>
+	<artifactId>xiaoyi-auth</artifactId>
 	<name>${project.artifactId}</name>
 	<description>小壹书：认证服务（负责处理用户登录、注册、账号注销等）</description>
 
