@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: xiaoyishu-auth
+  output:
+    ansi:
+      enabled: always

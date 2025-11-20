@@ -1,0 +1,11 @@
+{
+  "editor.fontSize": 14,
+  "files.autoSave": "onFocusChange",
+  "maven.executable.options": "-s D:\\Programs\\Dev\\maven\\conf\\settings-aliyun.xml",
+  "java.configuration.maven.userSettings": "D:\\Programs\\Dev\\maven\\conf\\settings-aliyun.xml",
+  "java.configuration.maven.globalSettings": "D:\\Programs\\Dev\\maven\\conf\\settings-aliyun.xml",
+  "editor.accessibilitySupport": "auto",
+  "editor.fontFamily": "JetBrains Mono",
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.configuration.updateBuildConfiguration": "interactive"
+}
