@@ -1,6 +1,6 @@
 spring:
   application:
-    name: xiaoyishu-auth
+    name: xiaoyi-auth
   output:
     ansi:
       enabled: always
