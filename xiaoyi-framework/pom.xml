@@ -17,6 +17,7 @@
 
    <modules>
         <module>xiaoyi-common</module>
+        <module>xiaoyi-spring-boot-starter-biz-operationlog</module>
     </modules>
 
 </project>
