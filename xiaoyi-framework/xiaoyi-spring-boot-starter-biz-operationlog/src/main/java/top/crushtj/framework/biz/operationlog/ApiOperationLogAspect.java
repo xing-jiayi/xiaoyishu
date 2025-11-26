@@ -20,15 +20,14 @@ import top.crushtj.framework.common.utils.JsonUtils;
 public class ApiOperationLogAspect {
     /** 以自定义 @ApiOperationLog 注解为切点，凡是添加 @ApiOperationLog 的方法，都会执行环绕中的代码 */
     @Pointcut("@annotation(top.crushtj.framework.biz.operationlog.aspect.ApiOperationLog)")
-    public void apiOperationLog() {
-    }
+    public void apiOperationLog() {}
 
     /**
      * 环绕
      * 
-     * @param joinPoint
-     * @return
-     * @throws Throwable
+     * @param joinPoint 连接点
+     * @return 方法执行结果
+     * @throws Throwable 方法执行过程中抛出的异常
      */
     @Around("apiOperationLog()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -36,25 +35,20 @@ public class ApiOperationLogAspect {
         long startTime = System.currentTimeMillis();
 
         // 获取被请求的类和方法
-        String className = joinPoint.getTarget()
-            .getClass()
-            .getSimpleName();
-        String methodName = joinPoint.getSignature()
-            .getName();
+        String className = joinPoint.getTarget().getClass().getSimpleName();
+        String methodName = joinPoint.getSignature().getName();
 
         // 请求入参
         Object[] args = joinPoint.getArgs();
         // 入参转 JSON 字符串
-        String argsJsonStr = Arrays.stream(args)
-            .map(toJsonStr())
-            .collect(Collectors.joining(", "));
+        String argsJsonStr = Arrays.stream(args).map(toJsonStr()).collect(Collectors.joining(", "));
 
         // 功能描述信息
         String description = getApiOperationLogDescription(joinPoint);
 
         // 打印请求相关参数
-        log.info("====== 请求开始: [{}], 入参: {}, 请求类: {}, 请求方法: {} =================================== ", description,
-            argsJsonStr, className, methodName);
+        log.info("\n\n请求开始: [{}], 请求参数: {}, 请求类: {}, 请求方法: {}\n", description, argsJsonStr, className,
+            methodName);
 
         // 执行切点方法
         Object result = joinPoint.proceed();
@@ -63,7 +57,7 @@ public class ApiOperationLogAspect {
         long executionTime = System.currentTimeMillis() - startTime;
 
         // 打印出参等相关信息
-        log.info("====== 请求结束: [{}], 耗时: {}ms, 出参: {} =================================== ", description, executionTime,
+        log.info("\n\n请求结束: [{}], 耗时: {}ms, 响应参数: {}\n", description, executionTime,
             JsonUtils.toJsonString(result));
 
         return result;
@@ -72,8 +66,8 @@ public class ApiOperationLogAspect {
     /**
      * 获取注解的描述信息
      * 
-     * @param joinPoint
-     * @return
+     * @param joinPoint 连接点
+     * @return 注解的描述信息
      */
     private String getApiOperationLogDescription(ProceedingJoinPoint joinPoint) {
         // 1. 从 ProceedingJoinPoint 获取 MethodSignature
@@ -92,7 +86,7 @@ public class ApiOperationLogAspect {
     /**
      * 转 JSON 字符串
      * 
-     * @return
+     * @return 入参的 JSON 字符串
      */
     private Function<Object, String> toJsonStr() {
         return JsonUtils::toJsonString;

@@ -3,6 +3,10 @@ package top.crushtj.xiaoyishu.auth.controller;
 import org.springframework.web.bind.annotation.RestController;
 import top.crushtj.framework.biz.operationlog.aspect.ApiOperationLog;
 import top.crushtj.framework.common.response.Response;
+import top.crushtj.xiaoyishu.auth.vo.User;
+
+import java.time.LocalDateTime;
+
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
@@ -18,8 +22,13 @@ public class TestController {
 
     @GetMapping("/test")
     @ApiOperationLog(description = "测试接口")
-    public Response<String> testController() {
-        return Response.success("Hello World!");
+    public Response<User> testController() {
+        return Response.success(User.builder()
+            .id(1L)
+            .name("ayi")
+            .age(18)
+            .createTime(LocalDateTime.now())
+            .build());
     }
 
 }
