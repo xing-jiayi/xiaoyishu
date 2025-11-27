@@ -1,6 +1,0 @@
-spring:
-  application:
-    name: xiaoyi-auth
-  output:
-    ansi:
-      enabled: always

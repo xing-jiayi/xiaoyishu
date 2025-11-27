@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 数据库连接信息
+    url: jdbc:mysql://10.0.0.3:3306/xiaoyishu?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: xiaoyi
+    password: HhpxE2HWE4bGTyB5
+
+logging:
+  level:
+    top.crushtj.xiaoyishu.auth.domain.mappers: debug
+mybatis-plus:
+  mapper-locations:
+    - classpath*:top/crushtj/**/*.xml # 匹配所有模块中的 Mapper XML 文件
+  type-aliases-package: top.crushtj.xiaoyishu.auth.domain.entity # 实体类包路径
+  configuration:
+    map-underscore-to-camel-case: true  # 开启驼峰命名转换
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 日志输出（调试用）
