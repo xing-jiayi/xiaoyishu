@@ -1,0 +1,36 @@
+name: Sync All Branches to GitHub
+
+on:
+  push:
+    branches: [ '*' ]  # 监听所有分支的推送事件
+
+jobs:
+  sync:
+    runs-on: sync
+    steps:
+      - name: Checkout code (Git CLI)
+        run: |
+          # 克隆 Gitea 仓库
+          git clone ${{ github.server_url }}/${{ github.repository }}.git .
+          # 切换到当前推送的分支
+          git checkout ${{ github.ref }}
+
+      - name: Set up Git identity
+        run: |
+          # 配置 Git 用户信息
+          git config --global user.name "ayi"
+          git config --global user.email "2294931964@qq.com"
+
+      - name: Add GitHub remote repository
+        run: |
+          # 添加 GitHub 远程仓库，使用令牌进行身份验证
+          git remote add github https://${{ secrets.GIT_HUB_TOKEN }}@github.com/xing-jiayi/xiaoyishu.git
+
+      - name: Push current branch to GitHub
+        run: |
+          # 获取当前推送的分支名（兼容 refs/heads/ 前缀）
+          CURRENT_BRANCH="${GITHUB_REF#refs/heads/}"
+          # 拉取 GitHub 对应分支的最新更改，允许无关历史（防止冲突）
+          git pull github "${CURRENT_BRANCH}" --rebase --allow-unrelated-histories || true
+          # 推送当前分支到 GitHub 对应分支
+          git push github "${CURRENT_BRANCH}" --force-with-lease  # 安全强制推送（避免覆盖他人提交）
