@@ -1,14 +1,53 @@
+server:
+  port: 18881
+  servlet:
+    context-path: /xiaoyishu-auth
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     # 数据库连接信息
     url: jdbc:mysql://10.0.0.3:3306/xiaoyishu?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: xiaoyi
-    password: HhpxE2HWE4bGTyB5
+    password: Os0TpcErSh26nT4Nqqjgo2vwi3IaEglzj+brT2b7q0P4Dlhnv3OEQVUNpG/dYqvJZUCR2/IyfxQ4LnQIB7FcfQ==
+    druid: # Druid 连接池
+      initial-size: 5 # 初始化连接池大小
+      min-idle: 5 # 最小连接池数量
+      max-active: 100 # 最大连接池数量
+      max-wait: 60000 # 连接时最大等待时间（单位：毫秒）
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000 # 配置多久进行一次检测，检测需要关闭的连接（单位：毫秒）
+      min-evictable-idle-time-millis: 300000 # 配置一个连接在连接池中最小生存的时间（单位：毫秒）
+      max-evictable-idle-time-millis: 900000 # 配置一个连接在连接池中最大生存的时间（单位：毫秒）
+      validation-query: SELECT 1 FROM DUAL # 配置测试连接是否可用的查询 sql
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: false
+      web-stat-filter:
+        enabled: true
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/* # 配置监控后台访问路径
+        login-username: admin # 配置监控后台登录的用户名、密码
+        login-password: admin
+      filter:
+        config:
+          enabled: true
+        stat:
+          enabled: true
+          log-slow-sql: true # 开启慢 sql 记录
+          slow-sql-millis: 2000 # 若执行耗时大于 2s，则视为慢 sql
+          merge-sql: true
+        wall: # 防火墙
+          config:
+            multi-statement-allow: true
+      connection-properties: config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAK6C4nQHNuYSebx/5vOdvDqP/o8AH+p73s1LWCFs915RiwVHvtEd+ropmXkCO3Agc9Zuo8pyMvccIgPL9F0I8YkCAwEAAQ==
+  output:
+    ansi:
+      enabled: always
+  application:
+    name: xiaoyishu-auth
 
-logging:
-  level:
-    top.crushtj.xiaoyishu.auth.domain.mappers: debug
 mybatis-plus:
   mapper-locations:
     - classpath*:top/crushtj/**/*.xml # 匹配所有模块中的 Mapper XML 文件
@@ -16,3 +55,11 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true  # 开启驼峰命名转换
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 日志输出（调试用）
+
+logging:
+  level:
+    top.crushtj.xiaoyishu.auth.domain.mappers: debug
+  config: classpath:config/logback-dev.xml
+
+
+

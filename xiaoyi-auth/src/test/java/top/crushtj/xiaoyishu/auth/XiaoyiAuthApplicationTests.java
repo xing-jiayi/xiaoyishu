@@ -1,5 +1,6 @@
 package top.crushtj.xiaoyishu.auth;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,14 @@ class XiaoyiAuthApplicationTests {
                                     .build();
 
         userMapper.insert(user);
+    }
+
+    @Test
+    void queryTest(){
+        LambdaQueryWrapper<UserEntity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(UserEntity::getUsername, "刑加一");
+        UserEntity user = userMapper.selectOne(queryWrapper);
+        log.info("查询结果：{}", user);
     }
 
 }
