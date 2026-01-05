@@ -7,8 +7,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     # 数据库连接信息
-    url: jdbc:mysql://10.0.0.3:3306/xiaoyishu?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
-    username: xiaoyi
+    url: jdbc:mysql://127.0.0.1:3306/xiaoyishu?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ayi
     password: Os0TpcErSh26nT4Nqqjgo2vwi3IaEglzj+brT2b7q0P4Dlhnv3OEQVUNpG/dYqvJZUCR2/IyfxQ4LnQIB7FcfQ==
     druid: # Druid 连接池
       initial-size: 5 # 初始化连接池大小
