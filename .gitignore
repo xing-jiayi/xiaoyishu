@@ -34,4 +34,4 @@ build/
 
 ### 日志 ###
 # 排除所有logs
-**/logs/*.log
+**/logs/**
