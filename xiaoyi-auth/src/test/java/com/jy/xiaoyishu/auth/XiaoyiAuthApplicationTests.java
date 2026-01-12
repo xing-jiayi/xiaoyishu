@@ -42,6 +42,8 @@ class XiaoyiAuthApplicationTests {
     void queryTest() {
         LambdaQueryWrapper<UserEntity> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserEntity::getUsername, "刑加一");
+        queryWrapper.orderByDesc(UserEntity::getCreateTime);
+        queryWrapper.last("limit 1");
         UserEntity user = userMapper.selectOne(queryWrapper);
         log.info("查询结果：{}", user);
     }
