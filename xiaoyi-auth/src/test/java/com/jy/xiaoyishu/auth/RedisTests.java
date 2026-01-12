@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @Slf4j
 public class RedisTests {
- @Resource
+    @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
     /**
@@ -27,8 +27,9 @@ public class RedisTests {
      */
     @Test
     void testSetKeyValue() {
-    	// 添加一个 key 为 name, value 值为 刑加一
-        redisTemplate.opsForValue().set("name", "刑加一");
+        // 添加一个 key 为 name, value 值为 刑加一
+        redisTemplate.opsForValue()
+                     .set("name", "刑加一");
     }
 
     /**
@@ -44,7 +45,8 @@ public class RedisTests {
      */
     @Test
     void testGetValue() {
-        log.info("value 值：{}", redisTemplate.opsForValue().get("name"));
+        log.info("value 值：{}", redisTemplate.opsForValue()
+                                            .get("name"));
     }
 
     /**

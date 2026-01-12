@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 /**
  *
  * @author ayi
@@ -30,7 +29,12 @@ public class TestController {
     @GetMapping("/test")
     @ApiOperationLog(description = "测试接口")
     public Response<User> testController() {
-        return Response.success(User.builder().id(1L).name("ayi").age(18).createTime(LocalDateTime.now()).build());
+        return Response.success(User.builder()
+                                    .id(1L)
+                                    .name("ayi")
+                                    .age(18)
+                                    .createTime(LocalDateTime.now())
+                                    .build());
     }
 
     @PostMapping("/test2")
@@ -42,7 +46,7 @@ public class TestController {
     @RequestMapping("/user/doLogin")
     public String doLogin(String username, String password) {
         // 此处仅作模拟示例，真实项目需要从数据库中查询数据进行比对
-        if("ayi".equals(username) && "12345678".equals(password)) {
+        if ("ayi".equals(username) && "12345678".equals(password)) {
             StpUtil.login(10001);
             return "登录成功";
         }
