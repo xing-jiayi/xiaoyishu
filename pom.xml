@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>top.crushtj</groupId>
+    <groupId>com.jy</groupId>
     <artifactId>xiaoyishu</artifactId>
     <version>${revision}</version>
 
@@ -48,14 +48,21 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>top.crushtj</groupId>
+                <groupId>com.jy</groupId>
                 <artifactId>xiaoyi-common</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- 业务接口日志组件 -->
             <dependency>
-                <groupId>top.crushtj</groupId>
+                <groupId>com.jy</groupId>
                 <artifactId>xiaoyi-spring-boot-starter-biz-operationlog</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 业务接口日志组件 -->
+            <dependency>
+                <groupId>com.jy</groupId>
+                <artifactId>xiaoyi-spring-boot-starter-jackson</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- Spring Boot 官方依赖管理 -->

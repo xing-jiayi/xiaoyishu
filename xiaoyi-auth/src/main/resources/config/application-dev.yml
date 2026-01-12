@@ -51,14 +51,14 @@ spring:
 mybatis-plus:
   mapper-locations:
     - classpath*:top/crushtj/**/*.xml # 匹配所有模块中的 Mapper XML 文件
-  type-aliases-package: top.crushtj.xiaoyishu.auth.domain.entity # 实体类包路径
+  type-aliases-package: com.jy.xiaoyishu.auth.domain.entity # 实体类包路径
   configuration:
     map-underscore-to-camel-case: true  # 开启驼峰命名转换
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 日志输出（调试用）
 
 logging:
   level:
-    top.crushtj.xiaoyishu.auth.domain.mappers: debug
+    com.jy.xiaoyishu.auth.domain.mappers: debug
   config: classpath:config/logback-dev.xml
 
 

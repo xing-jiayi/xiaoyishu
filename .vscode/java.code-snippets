@@ -18,39 +18,41 @@
   "类注释": {
     "prefix": "ccj",
     "body": [
-      "/**",
-      " *",
-      " * @Title: ${TM_FILENAME_BASE}",
-      " * @Description: ${1:}",
-      " * @Author: ${2:}",
-      " * @Date: ${CURRENT_YEAR}/${CURRENT_MONTH}/${CURRENT_DATE}",
-      " */"
+        "/**",
+        " *",
+        " * @author ${2:}",
+        " * @version V1.0",
+        " * @title ${TM_FILENAME_BASE}",
+        " * @description ${1:}",
+        " * @date${CURRENT_YEAR}/${CURRENT_MONTH}/${CURRENT_DATE}",
+        " */"
     ],
     "description": "生成类注释"
   },
   "接口注释": {
     "prefix": "icj",
     "body": [
-      "/**",
-      " *",
-      " * @Title: ${TM_FILENAME_BASE}",
-      " * @Description: ${1:}",
-      " * @Author: ${2:}",
-      " * @Date: ${CURRENT_YEAR}/${CURRENT_MONTH}/${CURRENT_DATE}",
-      " */"
+        "/**",
+        " *",
+        " * @author ${2:}",
+        " * @version V1.0",
+        " * @title ${TM_FILENAME_BASE}",
+        " * @description ${1:}",
+        " * @date${CURRENT_YEAR}/${CURRENT_MONTH}/${CURRENT_DATE}",
+        " */"
     ],
     "description": "生成接口注释"
   },
   "注解注释": {
     "prefix": "acj",
     "body": [
-      "/**",
-      " *",
-      " * @Title: ${TM_FILENAME_BASE}",
-      " * @Description: ${1:}",
-      " * @Author: ${2:}",
-      " * @Date: ${CURRENT_YEAR}/${CURRENT_MONTH}/${CURRENT_DATE}",
-      " */"
+        "/**",
+        " *",
+        " * @author ${2:}",
+        " * @version V1.0",
+        " * @title ${TM_FILENAME_BASE}",
+        " * @description ${1:}",
+        " * @date${CURRENT_YEAR}/${CURRENT_MONTH}/${CURRENT_DATE}",
     ],
     "description": "生成注解注释"
   },

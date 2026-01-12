@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-          <groupId>top.crushtj</groupId>
-          <artifactId>xiaoyishu</artifactId>
-          <version>${revision}</version>
+        <groupId>com.jy</groupId>
+        <artifactId>xiaoyishu</artifactId>
+        <version>${revision}</version>
     </parent>
 
     <packaging>pom</packaging>
@@ -15,9 +15,13 @@
     <name>${project.artifactId}</name>
     <description>平台基础设施层：封装一些常用功能，供各个业务线拿来即用</description>
 
-   <modules>
+    <modules>
+        <!--通用-->
         <module>xiaoyi-common</module>
+        <!--日志切面-->
         <module>xiaoyi-spring-boot-starter-biz-operationlog</module>
+        <!--Jackson-->
+        <module>xiaoyi-spring-boot-starter-jackson</module>
     </modules>
 
 </project>
