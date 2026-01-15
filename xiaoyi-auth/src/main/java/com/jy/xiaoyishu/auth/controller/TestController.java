@@ -12,8 +12,6 @@ import com.jy.xiaoyishu.auth.vo.User;
 import cn.dev33.satoken.stp.StpUtil;
 
 import java.time.LocalDateTime;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -29,12 +27,7 @@ public class TestController {
     @GetMapping("/test")
     @ApiOperationLog(description = "测试接口")
     public Response<User> testController() {
-        return Response.success(User.builder()
-                                    .id(1L)
-                                    .name("ayi")
-                                    .age(18)
-                                    .createTime(LocalDateTime.now())
-                                    .build());
+        return Response.success(User.builder().id(1L).name("ayi").age(18).createTime(LocalDateTime.now()).build());
     }
 
     @PostMapping("/test2")
