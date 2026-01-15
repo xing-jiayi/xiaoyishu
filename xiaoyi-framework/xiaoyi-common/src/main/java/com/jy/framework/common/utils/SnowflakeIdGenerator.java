@@ -7,7 +7,7 @@ import java.net.NetworkInterface;
 public class SnowflakeIdGenerator {
     // ====================== 配置参数 ======================
     /** 开始时间戳 (2024-01-01 00:00:00)，可自定义，减少ID长度 */
-    private static final long START_TIMESTAMP = 1704067200000L;
+    private static final long START_TIMESTAMP = 1767196800000L;
 
     /** 机器ID所占的位数 (最多10位，支持1024个节点) */
     private static final long WORKER_ID_BITS = 10L;
