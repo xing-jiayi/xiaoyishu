@@ -15,6 +15,15 @@ import com.jy.xiaoyishu.auth.enums.ResponseCodeEnum;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ *
+ * @author ayi
+ * @version V1.0
+ * @title GlobalExceptionHandler
+ * @description 全局异常处理器
+ * @date 2026/01/15 18:40
+ */
+
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {

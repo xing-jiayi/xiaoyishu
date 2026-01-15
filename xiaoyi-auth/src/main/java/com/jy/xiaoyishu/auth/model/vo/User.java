@@ -1,4 +1,4 @@
-package com.jy.xiaoyishu.auth.vo;
+package com.jy.xiaoyishu.auth.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

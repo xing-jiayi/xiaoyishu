@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.jy.framework.biz.operationlog.aspect.ApiOperationLog;
 import com.jy.framework.common.response.Response;
-import com.jy.xiaoyishu.auth.vo.User;
+import com.jy.xiaoyishu.auth.model.vo.User;
 
 import cn.dev33.satoken.stp.StpUtil;
 
