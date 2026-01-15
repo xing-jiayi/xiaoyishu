@@ -18,12 +18,12 @@ public class BizException extends RuntimeException {
     /**
      * 异常码
      */
-    private String code;
+    private String errorCode;
 
     /**
      * 异常信息
      */
-    private String message;
+    private String errorMessage;
 
     /**
      * 构造函数
@@ -31,8 +31,8 @@ public class BizException extends RuntimeException {
      * @param baseExceptionInterface 基础异常接口
      */
     public BizException(BaseExceptionInterface baseExceptionInterface) {
-        this.code = baseExceptionInterface.getCode();
-        this.message = baseExceptionInterface.getMessage();
+        this.errorCode = baseExceptionInterface.getErrorCode();
+        this.errorMessage = baseExceptionInterface.getErrorMessage();
     }
 
 }

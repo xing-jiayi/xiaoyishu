@@ -2,6 +2,7 @@ package com.jy.framework.common.response;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 import com.jy.framework.common.exception.BaseExceptionInterface;
@@ -30,6 +31,11 @@ public class Response<T> implements Serializable {
      * 响应信息
      */
     private String message;
+
+    /**
+     * 响应时间
+     */
+    private LocalDateTime time = LocalDateTime.now();
 
     /**
      * 是否成功
@@ -110,8 +116,8 @@ public class Response<T> implements Serializable {
     public static <T> Response<T> failure(BizException bizException) {
         Response<T> response = new Response<>();
         response.setSuccess(false);
-        response.setCode(bizException.getCode());
-        response.setMessage(bizException.getMessage());
+        response.setCode(bizException.getErrorCode());
+        response.setMessage(bizException.getErrorMessage());
         return response;
     }
 
@@ -125,8 +131,8 @@ public class Response<T> implements Serializable {
     public static <T> Response<T> failure(BaseExceptionInterface baseExceptionInterface) {
         Response<T> response = new Response<>();
         response.setSuccess(false);
-        response.setCode(baseExceptionInterface.getCode());
-        response.setMessage(baseExceptionInterface.getMessage());
+        response.setCode(baseExceptionInterface.getErrorCode());
+        response.setMessage(baseExceptionInterface.getErrorMessage());
         return response;
     }
 }

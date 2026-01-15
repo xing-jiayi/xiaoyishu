@@ -14,13 +14,13 @@ public interface BaseExceptionInterface {
      *
      * @return 异常码
      */
-    String getCode();
+    String getErrorCode();
 
     /**
      * 获取异常信息
      *
      * @return 异常信息
      */
-    String getMessage();
+    String getErrorMessage();
 
 }
