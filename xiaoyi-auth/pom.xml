@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <!-- 指定父项目 -->
     <parent>
-        <groupId>com.jy</groupId>
+        <groupId>top.crushtj</groupId>
         <artifactId>xiaoyishu</artifactId>
         <version>${revision}</version>
     </parent>
@@ -19,18 +19,18 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.jy</groupId>
+            <groupId>top.crushtj</groupId>
             <artifactId>xiaoyi-common</artifactId>
         </dependency>
         <!-- 业务接口日志组件 -->
         <dependency>
-            <groupId>com.jy</groupId>
+            <groupId>top.crushtj</groupId>
             <artifactId>xiaoyi-spring-boot-starter-biz-operationlog</artifactId>
         </dependency>
 
         <!--Jackson-->
         <dependency>
-            <groupId>com.jy</groupId>
+            <groupId>top.crushtj</groupId>
             <artifactId>xiaoyi-spring-boot-starter-jackson</artifactId>
         </dependency>
         <dependency>

@@ -5,7 +5,7 @@
       "name": "Spring Boot-XiaoyiAuthApplication<xiaoyi-auth>",
       "request": "launch",
       "cwd": "${workspaceFolder}",
-      "mainClass": "com.jy.xiaoyishu.auth.XiaoyiAuthApplication",
+      "mainClass": "top.crushtj.xiaoyishu.auth.XiaoyiAuthApplication",
       "projectName": "xiaoyi-auth",
       "args": "",
       "envFile": "${workspaceFolder}/.env"
