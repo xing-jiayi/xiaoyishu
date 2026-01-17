@@ -8,6 +8,7 @@
       "mainClass": "top.crushtj.xiaoyishu.auth.XiaoyiAuthApplication",
       "projectName": "xiaoyi-auth",
       "args": "",
+      "vmArgs": "-Djasypt.encryptor.password=GhaU7VjZd2b3M4Hbx4SelEXZc",
       "envFile": "${workspaceFolder}/.env"
     }
   ]

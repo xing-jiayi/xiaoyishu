@@ -82,6 +82,12 @@
 		    <groupId>com.aliyun</groupId>
 		    <artifactId>dypnsapi20170525</artifactId>
 	    </dependency>
+
+	    <!-- jasypt 加密工具 -->
+	    <dependency>
+		    <groupId>com.github.ulisesbocchio</groupId>
+		    <artifactId>jasypt-spring-boot-starter</artifactId>
+	    </dependency>
     </dependencies>
 
     <build>
