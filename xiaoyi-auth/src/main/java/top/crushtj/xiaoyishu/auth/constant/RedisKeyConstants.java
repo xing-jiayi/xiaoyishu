@@ -15,7 +15,10 @@ public class RedisKeyConstants {
      * 验证码 KEY 前缀
      */
     private static final String VERIFICATION_CODE_KEY_PREFIX = "verification_code:";
-
+    /**
+     * 验证码 KEY 过期时间 (分钟)
+     */
+    public static final long VERIFICATION_CODE_EXPIRE_TIME = 3;
     /**
      * 构建验证码 KEY
      * 

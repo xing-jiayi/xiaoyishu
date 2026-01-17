@@ -72,3 +72,7 @@ mybatis-plus:
 logging:
   level:
     top.crushtj.xiaoyishu.auth.domain.mappers: debug
+
+aliyun: # 接入阿里云（发送短信使用）
+  accessKeyId:
+  accessKeySecret:
