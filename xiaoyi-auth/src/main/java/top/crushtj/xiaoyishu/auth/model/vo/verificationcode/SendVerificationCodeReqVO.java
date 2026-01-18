@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import top.crushtj.framework.common.validator.PhoneNumber;
 
 /**
  *
@@ -25,6 +26,7 @@ public class SendVerificationCodeReqVO {
      * 手机号
      */
     @NotBlank(message = "手机号不能为空")
+    @PhoneNumber
     private String phoneNumber;
 
 }
