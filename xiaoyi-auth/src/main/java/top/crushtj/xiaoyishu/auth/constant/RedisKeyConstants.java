@@ -19,14 +19,30 @@ public class RedisKeyConstants {
      * 验证码 KEY 过期时间 (分钟)
      */
     public static final long VERIFICATION_CODE_EXPIRE_TIME = 3;
+
+    /**
+     * 用户角色数据 KEY 前缀
+     */
+    private static final String USER_ROLES_KEY_PREFIX = "user:roles:";
+
     /**
      * 构建验证码 KEY
-     * 
+     *
      * @param phone 手机号
      * @return 验证码 KEY
      */
     public static String buildVerificationCodeKey(String phone) {
         return VERIFICATION_CODE_KEY_PREFIX + phone;
+    }
+
+    /**
+     * 构建用户角色数据 KEY
+     *
+     * @param userId 用户 ID
+     * @return 用户角色数据 KEY
+     */
+    public static String buildUserRolesKey(Long userId) {
+        return USER_ROLES_KEY_PREFIX + userId;
     }
 
 }

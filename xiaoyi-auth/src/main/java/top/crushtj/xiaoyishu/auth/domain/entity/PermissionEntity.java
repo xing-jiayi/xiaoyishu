@@ -10,25 +10,24 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
  * @author ayi
  * @version V1.0
- * @title UserEntity
- * @date 2026/01/18 19:33:00
- * @description 用户表
+ * @title PermissionEntity
+ * @date 2026-01-18 21:20:36
+ * @description 权限表(t_permission)表实体类
  */
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("t_user")
-public class UserEntity implements Serializable {
+@TableName("t_permission")
+public class PermissionEntity implements Serializable {
     @Serial
-    private static final long serialVersionUID = -31680834394879938L;
+    private static final long serialVersionUID = -18586083527537804L;
 
     /**
      * 主键ID
@@ -37,64 +36,52 @@ public class UserEntity implements Serializable {
     private Long id;
 
     /**
-     * 小壹书号(唯一凭证)
+     * 父ID
      */
-    @TableField("XIAOYISHU_ID")
-    private String xiaoyishuId;
+    @TableField("PARENT_ID")
+    private Long parentId;
 
     /**
-     * 密码
+     * 权限名称
      */
-    @TableField("PASSWORD")
-    private String password;
+    @TableField("NAME")
+    private String name;
 
     /**
-     * 昵称
+     * 类型(1：目录 2：菜单 3：按钮)
      */
-    @TableField("NICKNAME")
-    private String nickname;
+    @TableField("TYPE")
+    private Integer type;
 
     /**
-     * 头像
+     * 菜单路由
      */
-    @TableField("AVATAR")
-    private String avatar;
+    @TableField("MENU_URL")
+    private String menuUrl;
 
     /**
-     * 生日
+     * 菜单图标
      */
-    @TableField("BIRTHDAY")
-    private LocalDate birthday;
+    @TableField("MENU_ICON")
+    private String menuIcon;
 
     /**
-     * 背景图
+     * 管理系统中的显示顺序
      */
-    @TableField("BACKGROUND_IMG")
-    private String backgroundImg;
+    @TableField("SORT")
+    private Integer sort;
 
     /**
-     * 手机号
+     * 权限标识
      */
-    @TableField("PHONE")
-    private String phone;
+    @TableField("PERMISSION_KEY")
+    private String permissionKey;
 
     /**
-     * 性别(1: 男 2: 女 3: 未知)
-     */
-    @TableField("SEX")
-    private Integer sex;
-
-    /**
-     * 状态(1：启用 0：禁用)
+     * 状态(1：启用；0：禁用)
      */
     @TableField("STATUS")
     private Integer status;
-
-    /**
-     * 个人简介
-     */
-    @TableField("INTRODUCTION")
-    private String introduction;
 
     /**
      * 创建时间
