@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  * @author ayi
  * @version V1.0
  * @title RoleEntity
- * @date 2026-01-18 21:20:51
+ * @date 2026-01-19 19:48:23
  * @description 角色表(t_role)表实体类
  */
 
@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 @TableName("t_role")
 public class RoleEntity implements Serializable {
     @Serial
-    private static final long serialVersionUID = 294965117543247928L;
+    private static final long serialVersionUID = -77681371692201000L;
 
     /**
      * 主键ID
@@ -81,6 +81,6 @@ public class RoleEntity implements Serializable {
      * 逻辑删除(0：未删除 1：已删除)
      */
     @TableField("IS_DELETED")
-    private Integer isDeleted;
+    private Boolean isDeleted;
 
 }

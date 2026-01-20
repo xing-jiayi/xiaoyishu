@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  * @author ayi
  * @version V1.0
  * @title RolePermissionRelEntity
- * @date 2026-01-18 21:21:12
+ * @date 2026-01-19 19:48:31
  * @description 用户权限表(t_role_permission_rel)表实体类
  */
 
@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 @TableName("t_role_permission_rel")
 public class RolePermissionRelEntity implements Serializable {
     @Serial
-    private static final long serialVersionUID = 308157477991435934L;
+    private static final long serialVersionUID = 345004944667469434L;
 
     /**
      * 主键ID
@@ -63,6 +63,6 @@ public class RolePermissionRelEntity implements Serializable {
      * 逻辑删除(0：未删除 1：已删除)
      */
     @TableField("IS_DELETED")
-    private Integer isDeleted;
+    private Boolean isDeleted;
 
 }

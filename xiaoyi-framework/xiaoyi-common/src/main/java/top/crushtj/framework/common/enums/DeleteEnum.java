@@ -17,5 +17,5 @@ public enum DeleteEnum {
     YES(true),
     NO(false);
 
-    private final Boolean value;
+    public final Boolean value;
 }

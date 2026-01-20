@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
  * @author ayi
  * @version V1.0
  * @title UserEntity
- * @date 2026/01/18 19:33:00
- * @description 用户表
+ * @date 2026-01-19 19:49:50
+ * @description 用户表(t_user)表实体类
  */
 
 @Data
@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 @TableName("t_user")
 public class UserEntity implements Serializable {
     @Serial
-    private static final long serialVersionUID = -31680834394879938L;
+    private static final long serialVersionUID = -47473970233354078L;
 
     /**
      * 主键ID
@@ -112,6 +112,6 @@ public class UserEntity implements Serializable {
      * 逻辑删除(0：未删除 1：已删除)
      */
     @TableField("IS_DELETED")
-    private Integer isDeleted;
+    private Boolean isDeleted;
 
 }

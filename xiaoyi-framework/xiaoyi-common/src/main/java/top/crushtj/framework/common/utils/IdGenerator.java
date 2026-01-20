@@ -4,7 +4,7 @@ import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 
-public class SnowflakeIdGenerator {
+public class IdGenerator {
     // ====================== 配置参数 ======================
     /** 开始时间戳 (2024-01-01 00:00:00)，可自定义，减少ID长度 */
     private static final long START_TIMESTAMP = 1767196800000L;
@@ -36,7 +36,7 @@ public class SnowflakeIdGenerator {
     private long lastTimestamp = -1L;
 
     // ====================== 单例实例 ======================
-    private static volatile SnowflakeIdGenerator INSTANCE;
+    private static volatile IdGenerator INSTANCE;
 
     /**
      * 私有构造器，初始化机器ID（自动计算，也可手动指定）
@@ -44,7 +44,7 @@ public class SnowflakeIdGenerator {
      * @param workerId 机器ID (0-1023)
      * @throws IllegalArgumentException 机器ID超出范围时抛出
      */
-    private SnowflakeIdGenerator(long workerId) {
+    private IdGenerator(long workerId) {
         // 校验机器ID范围
         long maxWorkerId = ~(-1L << WORKER_ID_BITS);
         if (workerId < 0 || workerId > maxWorkerId) {
@@ -58,11 +58,11 @@ public class SnowflakeIdGenerator {
      * 
      * @return 雪花算法生成器实例
      */
-    public static SnowflakeIdGenerator getInstance() {
+    public static IdGenerator getInstance() {
         if (INSTANCE == null) {
-            synchronized (SnowflakeIdGenerator.class) {
+            synchronized (IdGenerator.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new SnowflakeIdGenerator(calculateWorkerId());
+                    INSTANCE = new IdGenerator(calculateWorkerId());
                 }
             }
         }
@@ -75,11 +75,11 @@ public class SnowflakeIdGenerator {
      * @param workerId 机器ID (0-1023)
      * @return 雪花算法生成器实例
      */
-    public static SnowflakeIdGenerator getInstance(long workerId) {
+    public static IdGenerator getInstance(long workerId) {
         if (INSTANCE == null) {
-            synchronized (SnowflakeIdGenerator.class) {
+            synchronized (IdGenerator.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new SnowflakeIdGenerator(workerId);
+                    INSTANCE = new IdGenerator(workerId);
                 }
             }
         }
@@ -161,7 +161,7 @@ public class SnowflakeIdGenerator {
     // ====================== 测试用例 ======================
     public static void main(String[] args) {
         // 测试生成10个ID，验证有序性和唯一性
-        SnowflakeIdGenerator generator = SnowflakeIdGenerator.getInstance();
+        IdGenerator generator = IdGenerator.getInstance();
         for (int i = 0; i < 10; i++) {
             long id = generator.nextId();
             System.out.println("生成的ID：" + id);

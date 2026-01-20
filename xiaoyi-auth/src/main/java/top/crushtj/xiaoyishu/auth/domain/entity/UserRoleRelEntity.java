@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  * @author ayi
  * @version V1.0
  * @title UserRoleRelEntity
- * @date 2026-01-18 21:21:25
+ * @date 2026-01-19 19:49:59
  * @description 用户角色表(t_user_role_rel)表实体类
  */
 
@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 @TableName("t_user_role_rel")
 public class UserRoleRelEntity implements Serializable {
     @Serial
-    private static final long serialVersionUID = 788758889499348222L;
+    private static final long serialVersionUID = -77498437697772085L;
 
     /**
      * 主键ID
@@ -63,6 +63,6 @@ public class UserRoleRelEntity implements Serializable {
      * 逻辑删除(0：未删除 1：已删除)
      */
     @TableField("IS_DELETED")
-    private Integer isDeleted;
+    private Boolean isDeleted;
 
 }

@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author ayi
  * @version V1.0
  * @title RolePermissionRelMapper
- * @date 2026-01-18 21:21:12
+ * @date 2026-01-19 19:48:32
  * @description 用户权限表(t_role_permission_rel)表数据库访问层
  */
 public interface RolePermissionRelMapper extends BaseMapper<RolePermissionRelEntity> {

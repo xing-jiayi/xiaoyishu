@@ -17,5 +17,5 @@ public enum StatusEnum {
     ENABLED(1),
     DISABLED(0);
 
-    private final Integer value;
+    public final Integer value;
 }

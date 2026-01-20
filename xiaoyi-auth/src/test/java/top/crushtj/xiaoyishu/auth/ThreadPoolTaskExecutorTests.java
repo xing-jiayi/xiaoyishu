@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.test.context.TestPropertySource;
 
 /**
  * @author ayi
@@ -16,9 +17,10 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Slf4j
 @SpringBootTest
+@TestPropertySource(properties = {"jasypt.encryptor.password=GhaU7VjZd2b3M4Hbx4SelEXZc"})
 public class ThreadPoolTaskExecutorTests {
-    @Resource
-    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    @Resource(name = "taskExecutor")
+    private ThreadPoolTaskExecutor taskExecutor;
 
     /**
      * 测试线程池
@@ -28,7 +30,7 @@ public class ThreadPoolTaskExecutorTests {
         int count = 300;
         while (count-- > 0) {
             int finalCount = count;
-            threadPoolTaskExecutor.submit(() -> log.info("异步线程: 这是{}号线程", finalCount));
+            taskExecutor.submit(() -> log.info("异步线程: 这是{}号线程", finalCount));
         }
     }
 }

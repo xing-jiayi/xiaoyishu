@@ -36,7 +36,7 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
     private RedisTemplate<String, Object> redisTemplate;
 
     @Resource(name = "taskExecutor")
-    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    private ThreadPoolTaskExecutor taskExecutor;
 
     @Resource
     private AliyunSmsHelper aliyunSmsHelper;
@@ -56,6 +56,7 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
         // 3. 生成6位随机验证码
         String verificationCode = RandomUtil.randomNumbers(6);
 
+        //=============== 开发环境不实际调用短信发送接口 ===============
         // 4. 异步发送短信（用CompletableFuture跟踪任务状态，捕获异常）
         CompletableFuture<Boolean> smsSendFuture = CompletableFuture.supplyAsync(() -> {
             // 设置线程名称，便于日志排查
@@ -69,9 +70,9 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
                 log.error("==> 手机号: {}, 短信发送接口调用异常", MaskUtils.maskMobile(phoneNumber), e);
                 return false;
             }
-        }, threadPoolTaskExecutor);
+        }, taskExecutor);
 
-        // 5. 同步等待短信发送结果（超时控制，避免主线程阻塞过久）
+         //5. 同步等待短信发送结果（超时控制，避免主线程阻塞过久）
         boolean smsSendSuccess;
         try {
             smsSendSuccess = smsSendFuture.get(SMS_SEND_TIMEOUT_SECONDS, TimeUnit.SECONDS);
@@ -92,11 +93,13 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
             log.error("==> 手机号: {}, 发送验证码失败（第三方接口返回失败）", MaskUtils.maskMobile(phoneNumber));
             throw new BizException(ResponseCodeEnum.SMS_SEND_FAILED);
         }
+        //=============== 开发环境不实际调用短信发送接口 ===============
 
         // 7. 短信发送成功后，记录日志（验证码脱敏，仅保留后2位）+ 存储Redis
         log.info("==> 手机号: {}, 已发送验证码：【****{}】", MaskUtils.maskMobile(phoneNumber), verificationCode.substring(4));
         redisTemplate.opsForValue().set(key, verificationCode, VERIFICATION_CODE_EXPIRE_TIME, TimeUnit.MINUTES);
 
-        return Response.success();
+        return Response.success(verificationCode);
+        //return Response.success();
     }
 }

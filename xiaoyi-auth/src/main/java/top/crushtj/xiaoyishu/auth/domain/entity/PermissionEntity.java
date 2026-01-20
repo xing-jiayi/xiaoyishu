@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  * @author ayi
  * @version V1.0
  * @title PermissionEntity
- * @date 2026-01-18 21:20:36
+ * @date 2026-01-19 19:47:27
  * @description 权限表(t_permission)表实体类
  */
 
@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 @TableName("t_permission")
 public class PermissionEntity implements Serializable {
     @Serial
-    private static final long serialVersionUID = -18586083527537804L;
+    private static final long serialVersionUID = -30618877661010662L;
 
     /**
      * 主键ID
@@ -99,6 +99,6 @@ public class PermissionEntity implements Serializable {
      * 逻辑删除(0：未删除 1：已删除)
      */
     @TableField("IS_DELETED")
-    private Integer isDeleted;
+    private Boolean isDeleted;
 
 }

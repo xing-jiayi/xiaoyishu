@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace = "top.crushtj.xiaoyishu.auth.domain.mappers.UserMapper">
+<mapper namespace="top.crushtj.xiaoyishu.auth.domain.mappers.UserMapper">
 
-	<resultMap type = "top.crushtj.xiaoyishu.auth.domain.entity.UserEntity" id = "UserMap">
-		<result property = "id" column = "id" jdbcType = "INTEGER"/>
-		<result property = "xiaoyishuId" column = "xiaoyishu_id" jdbcType = "VARCHAR"/>
-		<result property = "password" column = "password" jdbcType = "VARCHAR"/>
-		<result property = "nickname" column = "nickname" jdbcType = "VARCHAR"/>
-		<result property = "avatar" column = "avatar" jdbcType = "VARCHAR"/>
-		<result property = "birthday" column = "birthday" jdbcType = "TIMESTAMP"/>
-		<result property = "backgroundImg" column = "background_img" jdbcType = "VARCHAR"/>
-		<result property = "phone" column = "phone" jdbcType = "VARCHAR"/>
-		<result property = "sex" column = "sex" jdbcType = "INTEGER"/>
-		<result property = "status" column = "status" jdbcType = "INTEGER"/>
-		<result property = "introduction" column = "introduction" jdbcType = "VARCHAR"/>
-		<result property = "createTime" column = "create_time" jdbcType = "TIMESTAMP"/>
-		<result property = "updateTime" column = "update_time" jdbcType = "TIMESTAMP"/>
-		<result property = "isDeleted" column = "is_deleted" jdbcType = "INTEGER"/>
-	</resultMap>
+    <resultMap type="top.crushtj.xiaoyishu.auth.domain.entity.UserEntity" id="UserMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="xiaoyishuId" column="xiaoyishu_id" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="birthday" column="birthday" jdbcType="TIMESTAMP"/>
+        <result property="backgroundImg" column="background_img" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="introduction" column="introduction" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="BOOLEAN"/>
+    </resultMap>
 	<select id = "selectByPhone" resultType = "top.crushtj.xiaoyishu.auth.domain.entity.UserEntity">
-		SELECT id, password
+		SELECT id, password, xiaoyishu_id
 		FROM t_user
 		WHERE phone = #{phone}
 	</select>
