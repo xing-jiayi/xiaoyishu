@@ -15,10 +15,7 @@ import top.crushtj.xiaoyishu.auth.model.vo.verificationcode.SendVerificationCode
 import top.crushtj.xiaoyishu.auth.service.VerificationCodeService;
 import top.crushtj.xiaoyishu.auth.sms.AliyunSmsHelper;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import static top.crushtj.xiaoyishu.auth.constant.RedisKeyConstants.VERIFICATION_CODE_EXPIRE_TIME;
 
@@ -58,41 +55,41 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 
         //=============== 开发环境不实际调用短信发送接口 ===============
         // 4. 异步发送短信（用CompletableFuture跟踪任务状态，捕获异常）
-        CompletableFuture<Boolean> smsSendFuture = CompletableFuture.supplyAsync(() -> {
-            // 设置线程名称，便于日志排查
-            Thread.currentThread().setName("sms-send-" + MaskUtils.maskMobile(phoneNumber));
-            String signName = "速通互联验证码";
-            String templateCode = "100001";
-            String templateParam = String.format("{\"code\":\"%s\",\"min\":\"%d\"}", verificationCode, VERIFICATION_CODE_EXPIRE_TIME);
-            try {
-                return aliyunSmsHelper.sendMessage(signName, templateCode, phoneNumber, templateParam);
-            } catch (Exception e) {
-                log.error("==> 手机号: {}, 短信发送接口调用异常", MaskUtils.maskMobile(phoneNumber), e);
-                return false;
-            }
-        }, taskExecutor);
-
-         //5. 同步等待短信发送结果（超时控制，避免主线程阻塞过久）
-        boolean smsSendSuccess;
-        try {
-            smsSendSuccess = smsSendFuture.get(SMS_SEND_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            log.error("==> 手机号: {}, 短信发送任务被中断", MaskUtils.maskMobile(phoneNumber), e);
-            Thread.currentThread().interrupt(); // 恢复中断状态
-            throw new BizException(ResponseCodeEnum.SMS_SEND_FAILED);
-        } catch (ExecutionException e) {
-            log.error("==> 手机号: {}, 短信发送任务执行异常", MaskUtils.maskMobile(phoneNumber), e);
-            throw new BizException(ResponseCodeEnum.SMS_SEND_FAILED);
-        } catch (TimeoutException e) {
-            log.error("==> 手机号: {}, 短信发送任务超时（{}秒）", MaskUtils.maskMobile(phoneNumber), SMS_SEND_TIMEOUT_SECONDS, e);
-            throw new BizException(ResponseCodeEnum.SMS_SEND_TIMEOUT);
-        }
-
-        // 6. 短信发送失败则直接抛异常，不存储Redis
-        if (!smsSendSuccess) {
-            log.error("==> 手机号: {}, 发送验证码失败（第三方接口返回失败）", MaskUtils.maskMobile(phoneNumber));
-            throw new BizException(ResponseCodeEnum.SMS_SEND_FAILED);
-        }
+        //CompletableFuture<Boolean> smsSendFuture = CompletableFuture.supplyAsync(() -> {
+        //    // 设置线程名称，便于日志排查
+        //    Thread.currentThread().setName("sms-send-" + MaskUtils.maskMobile(phoneNumber));
+        //    String signName = "速通互联验证码";
+        //    String templateCode = "100001";
+        //    String templateParam = String.format("{\"code\":\"%s\",\"min\":\"%d\"}", verificationCode, VERIFICATION_CODE_EXPIRE_TIME);
+        //    try {
+        //        return aliyunSmsHelper.sendMessage(signName, templateCode, phoneNumber, templateParam);
+        //    } catch (Exception e) {
+        //        log.error("==> 手机号: {}, 短信发送接口调用异常", MaskUtils.maskMobile(phoneNumber), e);
+        //        return false;
+        //    }
+        //}, taskExecutor);
+        //
+        // //5. 同步等待短信发送结果（超时控制，避免主线程阻塞过久）
+        //boolean smsSendSuccess;
+        //try {
+        //    smsSendSuccess = smsSendFuture.get(SMS_SEND_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        //} catch (InterruptedException e) {
+        //    log.error("==> 手机号: {}, 短信发送任务被中断", MaskUtils.maskMobile(phoneNumber), e);
+        //    Thread.currentThread().interrupt(); // 恢复中断状态
+        //    throw new BizException(ResponseCodeEnum.SMS_SEND_FAILED);
+        //} catch (ExecutionException e) {
+        //    log.error("==> 手机号: {}, 短信发送任务执行异常", MaskUtils.maskMobile(phoneNumber), e);
+        //    throw new BizException(ResponseCodeEnum.SMS_SEND_FAILED);
+        //} catch (TimeoutException e) {
+        //    log.error("==> 手机号: {}, 短信发送任务超时（{}秒）", MaskUtils.maskMobile(phoneNumber), SMS_SEND_TIMEOUT_SECONDS, e);
+        //    throw new BizException(ResponseCodeEnum.SMS_SEND_TIMEOUT);
+        //}
+        //
+        //// 6. 短信发送失败则直接抛异常，不存储Redis
+        //if (!smsSendSuccess) {
+        //    log.error("==> 手机号: {}, 发送验证码失败（第三方接口返回失败）", MaskUtils.maskMobile(phoneNumber));
+        //    throw new BizException(ResponseCodeEnum.SMS_SEND_FAILED);
+        //}
         //=============== 开发环境不实际调用短信发送接口 ===============
 
         // 7. 短信发送成功后，记录日志（验证码脱敏，仅保留后2位）+ 存储Redis

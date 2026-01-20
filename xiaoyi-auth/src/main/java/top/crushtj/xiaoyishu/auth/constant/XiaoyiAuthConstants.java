@@ -10,4 +10,5 @@ package top.crushtj.xiaoyishu.auth.constant;
 
 public class XiaoyiAuthConstants {
     public static final String NICK_NAME_PREFIX = "咿呀_";
+    public static final Long XIAOYI_ID_INITIAL_VALUE = 1000000L;
 }

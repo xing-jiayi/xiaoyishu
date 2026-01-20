@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import top.crushtj.framework.common.enums.DeleteEnum;
 import top.crushtj.framework.common.enums.StatusEnum;
 import top.crushtj.framework.common.exception.BizException;
@@ -34,6 +34,7 @@ import java.util.Objects;
 import static top.crushtj.xiaoyishu.auth.constant.RedisKeyConstants.XIAOYI_ID_GENERATOR_KEY;
 import static top.crushtj.xiaoyishu.auth.constant.RoleConstants.COMMON_USER_ROLE_ID;
 import static top.crushtj.xiaoyishu.auth.constant.XiaoyiAuthConstants.NICK_NAME_PREFIX;
+import static top.crushtj.xiaoyishu.auth.constant.XiaoyiAuthConstants.XIAOYI_ID_INITIAL_VALUE;
 
 /**
  * @author ayi
@@ -52,6 +53,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     private RedisTemplate<String, Object> redisTemplate;
     @Resource
     private UserRoleRelMapper userRoleRelMapper;
+
+    @Resource
+    private TransactionTemplate transactionTemplate;
 
     @Override
     public Response<String> loginOrRegister(UserLoginReqVO userLoginReqVO) {
@@ -111,40 +115,61 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         return Response.success(tokenInfo.tokenValue);
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public Long registerUser(String phone) {
-        long userId = IdGenerator.getInstance()
-            .nextId();
-        Long xiaoyishuId = redisTemplate.opsForValue()
-            .increment(XIAOYI_ID_GENERATOR_KEY);
-        UserEntity userEntity = UserEntity.builder()
-            .id(userId)
-            .phone(phone)
-            .xiaoyishuId(String.valueOf(xiaoyishuId))
-            .nickname(NICK_NAME_PREFIX + xiaoyishuId)
-            .status(StatusEnum.ENABLED.getValue())
-            .createTime(LocalDateTime.now())
-            .updateTime(LocalDateTime.now())
-            .isDeleted(DeleteEnum.NO.getValue())
-            .build();
-        save(userEntity);
+    private Long registerUser(String phone) {
+        return transactionTemplate.execute(status -> {
+            try {
+                long userId = IdGenerator.getInstance()
+                    .nextId();
+                // 小壹书用户ID，非数据库主键ID
+                Long xiaoyishuId = redisTemplate.opsForValue()
+                    .increment(XIAOYI_ID_GENERATOR_KEY);
+                UserEntity userEntity = UserEntity.builder()
+                    .id(userId)
+                    .phone(phone)
+                    .xiaoyishuId(String.valueOf(xiaoyishuId))
+                    .nickname(NICK_NAME_PREFIX + xiaoyishuId) // 自动注册的用户昵称默认为"咿呀_" + 用户ID
+                    .status(StatusEnum.ENABLED.getValue())
+                    .createTime(LocalDateTime.now())
+                    .updateTime(LocalDateTime.now())
+                    .isDeleted(DeleteEnum.NO.getValue())
+                    .build();
+                save(userEntity);
 
-        UserRoleRelEntity userRoleRel = UserRoleRelEntity.builder()
-            .id(IdGenerator.getInstance()
-                .nextId())
-            .userId(userId)
-            .roleId(COMMON_USER_ROLE_ID)
-            .createTime(LocalDateTime.now())
-            .updateTime(LocalDateTime.now())
-            .isDeleted(DeleteEnum.NO.getValue())
-            .build();
-        userRoleRelMapper.insert(userRoleRel);
-        List<Long> roles = new ArrayList<>();
-        roles.add(COMMON_USER_ROLE_ID);
-        String userRolesKey = RedisKeyConstants.buildUserRolesKey(phone);
-        redisTemplate.opsForValue()
-            .set(userRolesKey, JsonUtils.toJsonString(roles));
-        return userId;
+                UserRoleRelEntity userRoleRel = UserRoleRelEntity.builder()
+                    .id(IdGenerator.getInstance()
+                        .nextId())
+                    .userId(userId)
+                    .roleId(COMMON_USER_ROLE_ID) // 自动注册的用户角色为普通用户
+                    .createTime(LocalDateTime.now())
+                    .updateTime(LocalDateTime.now())
+                    .isDeleted(DeleteEnum.NO.getValue())
+                    .build();
+                int i = 1 / 0;
+                userRoleRelMapper.insert(userRoleRel);
+
+                // 将用户角色信息存储到 Redis 中
+                List<Long> roles = new ArrayList<>();
+                roles.add(COMMON_USER_ROLE_ID);
+                String userRolesKey = RedisKeyConstants.buildUserRolesKey(phone);
+                redisTemplate.opsForValue()
+                    .set(userRolesKey, JsonUtils.toJsonString(roles));
+                return userId;
+            } catch (Exception e) {
+                // 回滚事务
+                log.error("==> 用户注册异常，开始回滚事务: ", e);
+                status.setRollbackOnly();
+                // 回滚 redis 自增ID
+                Long decrement = Long.valueOf(Objects.requireNonNull(redisTemplate.opsForValue()
+                        .get(XIAOYI_ID_GENERATOR_KEY))
+                    .toString().trim());
+                if (decrement.compareTo(XIAOYI_ID_INITIAL_VALUE) > 0) {
+                    log.error("==> 用户注册异常，回滚redis自增ID: {}", decrement);
+                    redisTemplate.opsForValue()
+                        .decrement(XIAOYI_ID_GENERATOR_KEY);
+                }
+            }
+            return null;
+        });
     }
 }
 

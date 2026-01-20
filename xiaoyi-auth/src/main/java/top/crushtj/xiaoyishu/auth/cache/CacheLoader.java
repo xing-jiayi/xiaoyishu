@@ -10,6 +10,7 @@ import top.crushtj.xiaoyishu.auth.domain.entity.UserEntity;
 import top.crushtj.xiaoyishu.auth.domain.mappers.UserMapper;
 
 import static top.crushtj.xiaoyishu.auth.constant.RedisKeyConstants.XIAOYI_ID_GENERATOR_KEY;
+import static top.crushtj.xiaoyishu.auth.constant.XiaoyiAuthConstants.XIAOYI_ID_INITIAL_VALUE;
 
 /**
  * @author ayi
@@ -39,9 +40,9 @@ public class CacheLoader {
         queryWrapper.last("limit 1");
         UserEntity user = userMapper.selectOne(queryWrapper);
         if (user != null){
-            redisTemplate.opsForValue().set(XIAOYI_ID_GENERATOR_KEY, user.getXiaoyishuId());
+            redisTemplate.opsForValue().set(XIAOYI_ID_GENERATOR_KEY, Long.valueOf(user.getXiaoyishuId()));
         }else {
-            redisTemplate.opsForValue().set(XIAOYI_ID_GENERATOR_KEY, 1000000L);
+            redisTemplate.opsForValue().set(XIAOYI_ID_GENERATOR_KEY, XIAOYI_ID_INITIAL_VALUE);
         }
         log.info("加载用户自增ID缓存结束...");
     }
