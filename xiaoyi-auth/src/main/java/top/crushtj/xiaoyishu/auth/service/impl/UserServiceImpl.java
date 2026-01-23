@@ -3,6 +3,8 @@ package top.crushtj.xiaoyishu.auth.service.impl;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.base.Preconditions;
+
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -73,9 +75,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 String verificationCode = userLoginReqVO.getCode();
                 // 验证码登录
                 // 校验入参验证码是否为空
-                if (StringUtils.isBlank(verificationCode)) {
-                    return Response.failure(ResponseCodeEnum.PARAM_NOT_VALID.getErrorCode(), "验证码不能为空");
-                }
+                Preconditions.checkArgument(StringUtils.isNotBlank(verificationCode), "验证码不能为空");
 
                 // 构建验证码 Redis Key
                 String key = RedisKeyConstants.buildVerificationCodeKey(phone);

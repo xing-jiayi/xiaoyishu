@@ -91,4 +91,13 @@ public class GlobalExceptionHandler {
         log.error("{} request error, ", request.getRequestURI(), e);
         return Response.failure(ResponseCodeEnum.SYSTEM_ERROR);
     }
+
+    @ExceptionHandler({IllegalArgumentException.class})
+    @ResponseBody
+    public Response<Object> handleIllegalArgumentException(HttpServletRequest request, IllegalArgumentException e) {
+        log.error("{} request error, ", request.getRequestURI(), e);
+        String errorCode = ResponseCodeEnum.PARAM_NOT_VALID.getErrorCode();
+        String errorMessage = e.getMessage();
+        return Response.failure(errorCode,errorMessage);
+    }
 }
