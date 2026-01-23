@@ -20,13 +20,14 @@ import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
 @Slf4j
-@TestPropertySource(properties = {"jasypt.encryptor.password=GhaU7VjZd2b3M4Hbx4SelEXZc"})
+@TestPropertySource(properties = {"jasypt.encryptor.password="})
 public class EncryptTest {
     //@Autowired
     //private StringEncryptor defaultLazyEncryptor;
     //private StringEncryptor pooledPbeStringEncryptor;
     @Value("${jasypt.encryptor.password}")
     private String encryptorPassword;
+
     /**
      * Druid 密码加密
      */
@@ -34,7 +35,7 @@ public class EncryptTest {
     @SneakyThrows
     void testEncodePassword() {
         // 你的密码
-        String password = "HhpxE2HWE4bGTyB5";
+        String password = "";//密码
         String[] arr = ConfigTools.genKeyPair(512);
 
         // 私钥
@@ -52,7 +53,8 @@ public class EncryptTest {
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
 
         // JDK 17适配的核心配置（关键参数必须完整）
-        encryptor.setPassword(encryptorPassword); // AES-256要求密钥至少32位
+        String password = ""; // 加密密码
+        encryptor.setPassword(password); // AES-256要求密钥至少32位
         encryptor.setAlgorithm("PBEWithHMACSHA512AndAES_256");       // JDK17原生支持的算法
         encryptor.setKeyObtentionIterations(1000);                  // 迭代次数（固定值）
         encryptor.setStringOutputType("base64");                    // 输出格式（固定）
@@ -60,21 +62,21 @@ public class EncryptTest {
         encryptor.setIvGenerator(new RandomIvGenerator());          // AES必须的IV生成器
 
         // 待加密的原始值
-        String accessKeyId = "ayi";
-        String accessKeySecret = "HhpxE2HWE4bGTyB5";
+        String encry1 = ""; // 待加密的原始值1
+        String encry2 = ""; // 待加密的原始值2
 
         try {
-            String cipherAccessKeyId = encryptor.encrypt(accessKeyId);
-            System.out.println("accessKeyId加密成功，密文：" + cipherAccessKeyId);
+            String cipherAccessKeyId = encryptor.encrypt(encry1);
+            System.out.println("字段1加密成功，密文：" + cipherAccessKeyId);
 
             String decryptAccessKeyId = encryptor.decrypt(cipherAccessKeyId);
-            System.out.println("accessKeyId解密成功，明文：" + decryptAccessKeyId);
+            System.out.println("字段1解密成功，明文：" + decryptAccessKeyId);
 
-            String cipherAccessKeySecret = encryptor.encrypt(accessKeySecret);
-            System.out.println("accessKeySecret加密成功，密文：" + cipherAccessKeySecret);
+            String cipherAccessKeySecret = encryptor.encrypt(encry2);
+            System.out.println("字段2加密成功，密文：" + cipherAccessKeySecret);
 
             String decryptAccessKeySecret = encryptor.decrypt(cipherAccessKeySecret);
-            System.out.println("accessKeySecret解密成功，明文：" + decryptAccessKeySecret);
+            System.out.println("字段2解密成功，明文：" + decryptAccessKeySecret);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("加密失败原因：" + e.getMessage());

@@ -17,7 +17,7 @@ import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
 @SpringBootTest
-@TestPropertySource(properties = {"jasypt.encryptor.password=GhaU7VjZd2b3M4Hbx4SelEXZc"})
+@TestPropertySource(properties = {"jasypt.encryptor.password="})
 public class ThreadPoolTaskExecutorTests {
     @Resource(name = "taskExecutor")
     private ThreadPoolTaskExecutor taskExecutor;
