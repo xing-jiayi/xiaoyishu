@@ -1,4 +1,4 @@
-package top.crushtj.xiaoyishu.auth.cache;
+package top.crushtj.xiaoyishu.auth.runner.cache;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.annotation.PostConstruct;
@@ -34,16 +34,18 @@ public class CacheLoader {
      */
     @PostConstruct
     public void loadUserCache() {
-        log.info("加载用户自增ID缓存开始...");
+        log.info("==> 加载用户自增ID缓存开始...");
         LambdaQueryWrapper<UserEntity> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByDesc(UserEntity::getXiaoyishuId);
         queryWrapper.last("limit 1");
         UserEntity user = userMapper.selectOne(queryWrapper);
-        if (user != null){
-            redisTemplate.opsForValue().set(XIAOYI_ID_GENERATOR_KEY, Long.valueOf(user.getXiaoyishuId()));
-        }else {
-            redisTemplate.opsForValue().set(XIAOYI_ID_GENERATOR_KEY, XIAOYI_ID_INITIAL_VALUE);
+        if (user != null) {
+            redisTemplate.opsForValue()
+                .set(XIAOYI_ID_GENERATOR_KEY, Long.valueOf(user.getXiaoyishuId()));
+        } else {
+            redisTemplate.opsForValue()
+                .set(XIAOYI_ID_GENERATOR_KEY, XIAOYI_ID_INITIAL_VALUE);
         }
-        log.info("加载用户自增ID缓存结束...");
+        log.info("==> 加载用户自增ID缓存结束...");
     }
 }

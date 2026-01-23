@@ -14,4 +14,10 @@
         <result property="isDeleted" column="is_deleted" jdbcType="BOOLEAN"/>
     </resultMap>
 
+    <select id="selectEnabledRoleList" resultType="top.crushtj.xiaoyishu.auth.domain.entity.RoleEntity">
+        SELECT id, role_name, role_key
+        FROM t_role
+        WHERE status = 1
+          AND is_deleted = 0
+    </select>
 </mapper>

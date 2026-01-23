@@ -1,7 +1,9 @@
 package top.crushtj.xiaoyishu.auth.domain.mappers;
 
-import top.crushtj.xiaoyishu.auth.domain.entity.PermissionEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import top.crushtj.xiaoyishu.auth.domain.entity.PermissionEntity;
+
+import java.util.List;
 
 /**
  * @author ayi
@@ -11,6 +13,13 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @description 权限表(t_permission)表数据库访问层
  */
 public interface PermissionMapper extends BaseMapper<PermissionEntity> {
+
+    /**
+     * 查询所有已启用的权限列表
+     *
+     * @return 已启用的权限列表
+     */
+    List<PermissionEntity> selectAppEnabledList();
 
 }
 

@@ -26,9 +26,14 @@ public class RedisKeyConstants {
     private static final String USER_ROLES_KEY_PREFIX = "user:roles:";
 
     /**
-     * 小哈书全局 ID 生成器 KEY
+     * 小壹书全局 ID 生成器 KEY
      */
-    public static final String XIAOYI_ID_GENERATOR_KEY = "xiaoyishu_id_generator";
+    public static final String XIAOYI_ID_GENERATOR_KEY = "xiaoyishu.id.generator";
+
+    /**
+     * 角色权限数据 KEY 前缀
+     */
+    public static final String ROLE_PERMISSIONS_KEY_PREFIX = "role:permissions:";
 
     /**
      * 构建验证码 KEY
@@ -48,6 +53,16 @@ public class RedisKeyConstants {
      */
     public static String buildUserRolesKey(String phone) {
         return USER_ROLES_KEY_PREFIX + phone;
+    }
+
+    /**
+     * 构建角色权限数据 KEY
+     *
+     * @param roleId 角色 ID
+     * @return 角色权限数据 KEY
+     */
+    public static String buildRolePermissionsKey(Long roleId) {
+        return ROLE_PERMISSIONS_KEY_PREFIX + roleId;
     }
 
 }
