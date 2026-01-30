@@ -15,7 +15,7 @@ sync-to-github:
   variables:
     GIT_DEPTH: 0
   script:
-    # 1. 初始化Git配置，复用提交者信息（增加日志输出，便于排查）
+    # 1. 初始化Git配置，复用提交者信息（增加日志输出，便于排查） 
     - echo "当前提交者信息：$CI_COMMIT_AUTHOR"
     - GIT_AUTHOR_NAME=$(echo "$CI_COMMIT_AUTHOR" | cut -d'<' -f1 | xargs)
     - GIT_AUTHOR_EMAIL=$(echo "$CI_COMMIT_AUTHOR" | cut -d'<' -f2 | cut -d'>' -f1 | xargs)
