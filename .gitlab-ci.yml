@@ -1,0 +1,52 @@
+# 流水线名称（可选，便于识别）
+name: 同步GitLab代码到GitHub
+
+# 触发规则：仅当代码push到任意分支时执行（排除tag推送，可根据需求修改）
+rules:
+  - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_TAG == null
+    when: on_success
+  - when: never
+
+# 定义流水线任务
+jobs:
+  sync-to-github:
+    # 任务名称
+    stage: sync
+    # 标签
+    tags:
+      - sync
+    # 使用GitLab官方的alpine-git镜像（内置git，轻量，无需额外安装）
+    image: ruby:3.3
+    # 流水线执行的脚本核心逻辑
+    script:
+      # 1. 初始化Git配置，复用GitLab提交者的用户信息（从CI内置变量获取）
+      # CI_COMMIT_AUTHOR：提交者的"姓名 <邮箱>"（GitLab自动捕获）
+      - git config --global user.name "$(echo $CI_COMMIT_AUTHOR | cut -d'<' -f1 | xargs)"
+      - git config --global user.email "$(echo $CI_COMMIT_AUTHOR | cut -d'<' -f2 | cut -d'>' -f1 | xargs)"
+      # 关闭Git的SSL验证（可选，避免部分环境下HTTPS证书问题导致推送失败）
+      - git config --global http.sslVerify false
+
+      # 2. 拉取当前项目的完整代码（含所有分支、提交记录）
+      # CI_REPOSITORY_URL：GitLab项目的内置仓库地址（自动获取）
+      - git clone --mirror $CI_REPOSITORY_URL .git-mirror
+      - cd .git-mirror
+
+      # 3. 拼接GitHub的HTTPS仓库地址（PAT@域名，实现免密认证）
+      # 格式：https://<PAT>@github.com/用户名/仓库名.git
+      - GITHUB_PUSH_URL=$(echo $GITHUB_REPO_URL | sed "s/https:\/\//https:\/\/$GITHUB_PAT@/")
+
+      # 4. 添加GitHub作为远程仓库，并强制推送（保证分支完全同步）
+      # --mirror：镜像推送，同步所有分支、标签、提交记录（和GitLab保持一致）
+      - git remote add github $GITHUB_PUSH_URL
+      - git push --mirror github
+    # 缓存（可选，加快后续流水线执行速度，无需重复拉取基础代码）
+    cache:
+      paths:
+        - .git-mirror/
+    # 失败重试：任务失败时自动重试2次（避免网络波动导致的偶发失败）
+    retry:
+      max: 2
+      when:
+        - runner_system_failure
+        - stuck_or_timeout_failure
+        - api_failure
