@@ -1,39 +1,38 @@
-# 定义流水线阶段
 stages:
   - sync
 
-# 定义同步任务
 sync-to-github:
   stage: sync
-  # 指定Runner标签
   tags:
     - sync
-  # 使用轻量git镜像
+  # 保留你修改的ruby:3.3镜像（自带所有所需工具，无需安装依赖）
   image: ruby:3.3
-  # 每个job内部定义触发规则
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_TAG == null'
       when: on_success
     - when: never
+  # 核心1：关闭浅克隆，拉取完整仓库信息（新分支同步必备）
+  variables:
+    GIT_DEPTH: 0
   script:
-    # 提取提交者姓名和邮箱
-    - git config --global user.name "$(echo $CI_COMMIT_AUTHOR | cut -d'<' -f1 | xargs)"
-    - git config --global user.email "$(echo $CI_COMMIT_AUTHOR | cut -d'<' -f2 | cut -d'>' -f1 | xargs)"
+    # 1. 初始化Git配置，复用提交者信息（增加日志输出，便于排查）
+    - echo "当前提交者信息：$CI_COMMIT_AUTHOR"
+    - GIT_AUTHOR_NAME=$(echo "$CI_COMMIT_AUTHOR" | cut -d'<' -f1 | xargs)
+    - GIT_AUTHOR_EMAIL=$(echo "$CI_COMMIT_AUTHOR" | cut -d'<' -f2 | cut -d'>' -f1 | xargs)
+    - git config --global user.name "$GIT_AUTHOR_NAME"
+    - git config --global user.email "$GIT_AUTHOR_EMAIL"
     - git config --global http.sslVerify false
-
-    # 克隆镜像仓库
-    - git clone --mirror $CI_REPOSITORY_URL .git-mirror
-    - cd .git-mirror
-
-    # 构造带PAT的GitHub推送地址
-    - GITHUB_PUSH_URL=$(echo $GITHUB_REPO_URL | sed "s/https:\/\//https:\/\/$GITHUB_PAT@/")
-
-    # 推送至GitHub
-    - git remote add github $GITHUB_PUSH_URL
+    # 2. 核心2：打印变量排查（关键！能看到PAT和仓库地址是否正确）
+    - echo "原始GitHub地址：$GITHUB_REPO_URL"
+    - echo "拼接后推送地址：https://$GITHUB_PAT@${GITHUB_REPO_URL#https://}"
+    # 3. 核心3：重构地址拼接（更稳定，避免sed解析问题）
+    - GITHUB_PUSH_URL="https://$GITHUB_PAT@${GITHUB_REPO_URL#https://}"
+    # 4. 核心4：安全处理remote（存在则删除，避免重复添加报错）
+    - git remote rm github || true
+    # 5. 添加GitHub远程并推送（新分支用--mirror会自动在GitHub创建）
+    - git remote add github "$GITHUB_PUSH_URL"
+    - echo "开始同步GitLab分支$CI_COMMIT_BRANCH到GitHub..."
     - git push --mirror github
-  cache:
-    paths:
-      - .git-mirror/
   retry:
     max: 2
     when:
