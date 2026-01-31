@@ -1,0 +1,54 @@
+stages:
+  - sync
+
+sync-to-github:
+  stage: sync
+  tags:
+    - sync
+  image: ruby:latest
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_TAG == null'
+      when: on_success
+    - when: never
+  # 关闭浅克隆，拉取完整提交记录
+  variables:
+    GIT_DEPTH: 0
+  script:
+    # 1. 初始化Git配置，复用提交者信息
+    - echo "当前提交者信息：$CI_COMMIT_AUTHOR"
+    - GIT_AUTHOR_NAME=$(echo "$CI_COMMIT_AUTHOR" | cut -d'<' -f1 | xargs)
+    - GIT_AUTHOR_EMAIL=$(echo "$CI_COMMIT_AUTHOR" | cut -d'<' -f2 | cut -d'>' -f1 | xargs)
+    - git config --global user.name "$GIT_AUTHOR_NAME"
+    - git config --global user.email "$GIT_AUTHOR_EMAIL"
+    - git config --global http.sslVerify false
+    # 核心新增：禁用HTTP2，强制使用HTTP/1.1（解决HTTP2 framing layer帧层错误）
+    - git config --global http.version HTTP/1.1
+    - git config --global http.proxy $PROXY_ADDR
+    - git config --global https.proxy $PROXY_ADDR
+
+
+    # 2. 构造带PAT的GitHub推送地址
+    - GITHUB_PUSH_URL="https://$GITHUB_PAT@${GITHUB_REPO_URL#https://}"
+    - echo "同步目标：GitHub仓库 $GITHUB_REPO_URL"
+
+    # 3. 安全处理GitHub远程仓库
+    - git remote rm github || true
+    - git remote add github "$GITHUB_PUSH_URL"
+
+    # 4. 核心修复：基于分离HEAD创建本地同名分支（解决refspec不匹配问题）
+    - echo "基于分离HEAD创建本地分支 $CI_COMMIT_BRANCH"
+    - git checkout -b $CI_COMMIT_BRANCH
+
+    # 5. 拉取GitHub远程最新代码（避免冲突，新分支拉取失败不影响）
+    - git fetch github || true
+
+    # 6. 单分支精准推送（GitHub自动创建不存在的分支）
+    - echo "开始同步GitLab分支 $CI_COMMIT_BRANCH 到GitHub..."
+    - git push github $CI_COMMIT_BRANCH:$CI_COMMIT_BRANCH -f
+
+  retry:
+    max: 2
+    when:
+      - runner_system_failure
+      - stuck_or_timeout_failure
+      - api_failure
