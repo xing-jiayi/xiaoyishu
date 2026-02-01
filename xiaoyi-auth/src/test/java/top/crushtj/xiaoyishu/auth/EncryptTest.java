@@ -64,23 +64,46 @@ public class EncryptTest {
         // 待加密的原始值
         String encry1 = ""; // 待加密的原始值1
         String encry2 = ""; // 待加密的原始值2
+        String encry3 = ""; // 待加密的原始值3
 
         try {
-            String cipherAccessKeyId = encryptor.encrypt(encry1);
-            System.out.println("字段1加密成功，密文：" + cipherAccessKeyId);
-
-            String decryptAccessKeyId = encryptor.decrypt(cipherAccessKeyId);
-            System.out.println("字段1解密成功，明文：" + decryptAccessKeyId);
-
-            String cipherAccessKeySecret = encryptor.encrypt(encry2);
-            System.out.println("字段2加密成功，密文：" + cipherAccessKeySecret);
-
-            String decryptAccessKeySecret = encryptor.decrypt(cipherAccessKeySecret);
-            System.out.println("字段2解密成功，明文：" + decryptAccessKeySecret);
+            String cipherText1 = encryptor.encrypt(encry1);
+            System.out.println("字段1加密成功，密文：" + cipherText1);
+            String cipherText2 = encryptor.encrypt(encry2);
+            System.out.println("字段2加密成功，密文：" + cipherText2);
+            String cipherText3 = encryptor.encrypt(encry3);
+            System.out.println("字段2加密成功，密文：" + cipherText3);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("加密失败原因：" + e.getMessage());
         }
     }
+
+    @Test
+    public void dencrypt(){
+        StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+        String cipherText1 = "";//密文
+        String cipherText2 = "";//密文
+        String cipherText3 = "";//密文
+        String password = "";//加密密码
+        encryptor.setPassword(password); // AES-256要求密钥至少32位
+        encryptor.setAlgorithm("PBEWithHMACSHA512AndAES_256");       // JDK17原生支持的算法
+        encryptor.setKeyObtentionIterations(1000);                  // 迭代次数（固定值）
+        encryptor.setStringOutputType("base64");                    // 输出格式（固定）
+        encryptor.setProviderName("SunJCE");                        // 加密提供者（JDK17默认）
+        encryptor.setIvGenerator(new RandomIvGenerator());
+        try {
+            String text1 = encryptor.decrypt(cipherText1);
+            System.out.println("字段1解密成功，明文：" + text1);
+            String text2 = encryptor.decrypt(cipherText2);
+            System.out.println("字段2解密成功，明文：" + text2);
+            String text3 = encryptor.decrypt(cipherText3);
+            System.out.println("字段2解密成功，明文：" + text3);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("加密失败原因：" + e.getMessage());
+        }// AES必须的IV生成器
+    }
+
 
 }

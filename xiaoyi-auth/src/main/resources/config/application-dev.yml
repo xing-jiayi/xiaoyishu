@@ -6,9 +6,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     # 数据库连接信息
-    url: ENC(+rm/FjvaL/fDxkZu/G9zxQnSO2M60VFodOuZzxqlxzUyNN2ooNjH9mtVVZiqlqMm8EHDCBKYD/rI4e1VdaDlYtwL+WxdW2K6rujuUm1R0Mkjl1kphthDaiAK5tnPvtfffL4aVpBbA7oOUdsX0tCURzWvpjSFhDHlxtb4b+Ezx6JeHJoZDEJ0bErjDETLdjbIGDNdCsTCvz2wp1S5+AdW39S5C8kj4PNLIXkbckzKdhHm9ATLrixdveyBLmuBkDwLsE9XBmCFm0ipST5/SVg8WA==)
-    username: ENC(B/DozYPqx155j/Gdh3QkCX/wGmuzLf1jumsbb1kF4GY6EjrlRdAatc8BlhrrR2J6)
-    password: ENC(JwQdlswsrwmGE6eplp6Jk9Vp5s6zlFgra6jLN5fKBt8qOyqQHUHCJM6JcKp5g0t8B/or2wTH18ohR/d41oyV9w==)
+    url: ENC(oyIjmfAXMQ/z3uHl88N68RYJ96HJhdLkXMBBpE1wq9kSbYuTlxwZV/F7Qxa6tDAu+MD6I9swGqmYl2ormW/bzxPQdk+rrQANSQVA+ekyPGd97I5RGPfLLGQCw6FExrbhh9uzKGvekSmsIC8h91dTL2sMD8dYHbuRpW9J5knEyHSCZ90Bep1ZOlu2mWNQfdbaqmbafs6Bhjj9Iu4m9SblAMomAbDVT1oREPzjtMX640ro+Ou/YGVYPuLj3LlwVooauGCoswmHK0cA2TCD0RqaIg==)
+    username: ENC(Hf/tJoMig8FWFHopB7CMlQFuBhu61JbpA64JQWvqrmL+fTtGi6QNuI+sHBNY43nY)
+    password: ENC(l2k707lyMR9ACwqEHl/d3VOojwmvIyRsH7leB9fa9ppOtbKBae8YnVVuEMcRhEqMTTvcqZ4Otd/TotqZMerL/w==)
     druid: # Druid 连接池
       initial-size: 5 # 初始化连接池大小
       min-idle: 5 # 最小连接池数量
@@ -43,7 +43,7 @@ spring:
   data:
     redis:
       database: 0 # Redis 数据库索引（默认为 0）
-      host: ENC(W8nbSo0vMjCenHHLHyhvdhW2wH3oI54/FW+LQp8H9lx6xQH2Tm56nGSgNom6xsK7) # Redis 服务器地址
+      host: ENC(C1TWXF+/HzWQBF25uXCdy/0fHoRDXdCW72+NKCIJURg4l3IDnJzl278KmFhfsusX) # Redis 服务器地址
       port: 6379 # Redis 服务器连接端口
       password: ENC(iK/k0IGPflACqYMUwX4N/sGvCVuysYywLcAO+Ikeqk326V8hCr8dgEGzkiEIwWOo) # Redis 服务器连接密码（默认为空）
       timeout: 5s # 读超时时间
