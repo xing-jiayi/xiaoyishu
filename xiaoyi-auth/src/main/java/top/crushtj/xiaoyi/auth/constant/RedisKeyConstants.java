@@ -48,11 +48,11 @@ public class RedisKeyConstants {
     /**
      * 构建用户角色数据 KEY
      *
-     * @param phone 用户手机号
+     * @param userId 用户手机号
      * @return 用户角色数据 KEY
      */
-    public static String buildUserRolesKey(String phone) {
-        return USER_ROLES_KEY_PREFIX + phone;
+    public static String buildUserRolesKey(Long userId) {
+        return USER_ROLES_KEY_PREFIX + userId;
     }
 
     /**

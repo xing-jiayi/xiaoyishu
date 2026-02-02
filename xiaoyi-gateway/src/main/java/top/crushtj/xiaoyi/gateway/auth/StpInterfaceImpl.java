@@ -1,6 +1,7 @@
 package top.crushtj.xiaoyi.gateway.auth;
 
 import cn.dev33.satoken.stp.StpInterface;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,15 +14,18 @@ import java.util.List;
  * @description 自定义权限验证接口
  */
 
+@Slf4j
 @Component
 public class StpInterfaceImpl implements StpInterface {
     @Override
-    public List<String> getPermissionList(Object o, String s) {
+    public List<String> getPermissionList(Object loginId, String loginType) {
+        log.info("## 获取用户权限列表, loginId: {}", loginId);
         return List.of();
     }
 
     @Override
-    public List<String> getRoleList(Object o, String s) {
+    public List<String> getRoleList(Object loginId, String loginType) {
+        log.info("## 获取用户角色列表, loginId: {}", loginId);
         return List.of();
     }
 }

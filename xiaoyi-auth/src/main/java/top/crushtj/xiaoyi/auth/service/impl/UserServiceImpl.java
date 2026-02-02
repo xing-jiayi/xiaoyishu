@@ -4,7 +4,6 @@ import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Preconditions;
-
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -103,6 +102,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 } else {
                     // 已注册，则获取其用户 ID
                     userId = userEntity.getId();
+                    this.loadUserRole(userId);
                 }
             }
         }
@@ -115,6 +115,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         return Response.success(tokenInfo.tokenValue);
     }
 
+    /**
+     * 用户注册
+     *
+     * @param phone 手机号
+     * @return 用户ID
+     */
     private Long registerUser(String phone) {
         return transactionTemplate.execute(status -> {
             try {
@@ -150,7 +156,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 // 将用户角色信息存储到 Redis 中
                 List<Long> roles = new ArrayList<>();
                 roles.add(COMMON_USER_ROLE_ID);
-                String userRolesKey = RedisKeyConstants.buildUserRolesKey(phone);
+                String userRolesKey = RedisKeyConstants.buildUserRolesKey(userId);
                 redisTemplate.opsForValue()
                     .set(userRolesKey, JsonUtils.toJsonString(roles));
                 return userId;
@@ -170,6 +176,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             }
             return null;
         });
+    }
+
+    /**
+     * 加载用户角色信息到缓存
+     *
+     * @param userId 用户ID
+     */
+    private void loadUserRole(Long userId) {
+        String userRolesKey = RedisKeyConstants.buildUserRolesKey(userId);
+        Boolean hasKey = redisTemplate.hasKey(userRolesKey);
+        if (!hasKey) {
+            List<Long> roles = userRoleRelMapper.selectByUserId(userId);
+            redisTemplate.opsForValue().set(userRolesKey,JsonUtils.toJsonString(roles));
+        }
     }
 }
 
