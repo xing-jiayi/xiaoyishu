@@ -33,5 +33,12 @@ public class UserController {
     public Response<String> loginOrRegister(@RequestBody @Validated UserLoginReqVO userLoginReqVO) {
         return userService.loginOrRegister(userLoginReqVO);
     }
+
+    @PostMapping("/logout")
+    @ApiOperationLog(description = "用户登出")
+    public Response<Void> logout() {
+        // todo 实现用户登出逻辑
+        return Response.success();
+    }
 }
 
