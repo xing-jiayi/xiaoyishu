@@ -19,6 +19,7 @@
     <modules>
         <module>xiaoyi-auth</module>
         <module>xiaoyi-framework</module>
+        <module>xiaoyi-gateway</module>
     </modules>
 
     <properties>

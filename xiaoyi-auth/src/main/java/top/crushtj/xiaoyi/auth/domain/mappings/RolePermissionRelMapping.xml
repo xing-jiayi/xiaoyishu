@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.crushtj.xiaoyi.auth.domain.mappers.RolePermissionRelMapper">
+
+    <resultMap type="top.crushtj.xiaoyi.auth.domain.entity.RolePermissionRelEntity" id="RolePermissionRelMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="roleId" column="role_id" jdbcType="INTEGER"/>
+        <result property="permissionId" column="permission_id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="BOOLEAN"/>
+    </resultMap>
+    <select id="selectByRoleIds" resultType="top.crushtj.xiaoyi.auth.domain.entity.RolePermissionRelEntity">
+        SELECT role_id, permission_id FROM t_role_permission_rel
+        <where>
+            <if test="roleIds!=null and !roleIds.empty">
+                AND role_id IN
+                <foreach collection="roleIds" item="roleId" open="(" separator="," close=")">
+                    #{roleId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+</mapper>
