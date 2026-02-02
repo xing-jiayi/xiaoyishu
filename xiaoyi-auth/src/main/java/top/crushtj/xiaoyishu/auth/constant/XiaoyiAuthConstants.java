@@ -13,5 +13,5 @@ public class XiaoyiAuthConstants {
     public static final Long XIAOYI_ID_INITIAL_VALUE = 1000000L;
 
     public static final String ALARM_TYPE_SMS = "sms";
-    public static final String ALARM_TYPE_MAIL = "mail";
+    public static final String ALARM_TYPE_EMAIL = "email";
 }

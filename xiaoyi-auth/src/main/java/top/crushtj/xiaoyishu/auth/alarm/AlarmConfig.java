@@ -30,7 +30,7 @@ public class AlarmConfig {
         // 根据配置文件中的告警类型，初始化选择不同的告警实现类
         if (StringUtils.equals(XiaoyiAuthConstants.ALARM_TYPE_SMS, alarmType)) {
             return new SmsAlarmHelper();
-        } else if (StringUtils.equals(XiaoyiAuthConstants.ALARM_TYPE_MAIL, alarmType)) {
+        } else if (StringUtils.equals(XiaoyiAuthConstants.ALARM_TYPE_EMAIL, alarmType)) {
             return new MailAlarmHelper();
         } else {
             throw new IllegalArgumentException("错误的告警类型...");
