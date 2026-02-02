@@ -23,3 +23,6 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: true
+
+alarm:
+  type: sms # 告警方式，sms-短信，email-邮件

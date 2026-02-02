@@ -12,13 +12,13 @@ import top.crushtj.framework.common.response.Response;
 import top.crushtj.xiaoyishu.auth.model.vo.user.UserLoginReqVO;
 import top.crushtj.xiaoyishu.auth.service.UserService;
 
-   /**
+/**
  * @author ayi
  * @version V1.0
  * @title UserController
  * @date 2026-01-18 20:40:21
  * @description 用户表(User)表控制层
-*/
+ */
 
 @Slf4j
 @RestController
