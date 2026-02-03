@@ -58,11 +58,11 @@ public class RedisKeyConstants {
     /**
      * 构建角色权限数据 KEY
      *
-     * @param roleId 角色 ID
+     * @param roleKey 角色 ID
      * @return 角色权限数据 KEY
      */
-    public static String buildRolePermissionsKey(Long roleId) {
-        return ROLE_PERMISSIONS_KEY_PREFIX + roleId;
+    public static String buildRolePermissionsKey(String roleKey) {
+        return ROLE_PERMISSIONS_KEY_PREFIX + roleKey;
     }
 
 }

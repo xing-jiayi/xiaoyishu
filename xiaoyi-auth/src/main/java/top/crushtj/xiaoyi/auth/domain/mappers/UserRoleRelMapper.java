@@ -1,9 +1,7 @@
 package top.crushtj.xiaoyi.auth.domain.mappers;
 
-import top.crushtj.xiaoyi.auth.domain.entity.UserRoleRelEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-
-import java.util.List;
+import top.crushtj.xiaoyi.auth.domain.entity.UserRoleRelEntity;
 
 /**
  * @author ayi
@@ -14,6 +12,5 @@ import java.util.List;
  */
 public interface UserRoleRelMapper extends BaseMapper<UserRoleRelEntity> {
 
-    List<Long> selectByUserId(Long userId);
 }
 

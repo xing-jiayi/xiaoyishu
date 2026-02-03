@@ -18,8 +18,10 @@ import top.crushtj.framework.common.utils.IdGenerator;
 import top.crushtj.framework.common.utils.JsonUtils;
 import top.crushtj.framework.common.utils.MaskUtils;
 import top.crushtj.xiaoyi.auth.constant.RedisKeyConstants;
+import top.crushtj.xiaoyi.auth.domain.entity.RoleEntity;
 import top.crushtj.xiaoyi.auth.domain.entity.UserEntity;
 import top.crushtj.xiaoyi.auth.domain.entity.UserRoleRelEntity;
+import top.crushtj.xiaoyi.auth.domain.mappers.RoleMapper;
 import top.crushtj.xiaoyi.auth.domain.mappers.UserMapper;
 import top.crushtj.xiaoyi.auth.domain.mappers.UserRoleRelMapper;
 import top.crushtj.xiaoyi.auth.enums.LoginTypeEnum;
@@ -54,6 +56,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     private RedisTemplate<String, Object> redisTemplate;
     @Resource
     private UserRoleRelMapper userRoleRelMapper;
+
+    @Resource
+    private RoleMapper roleMapper;
 
     @Resource
     private TransactionTemplate transactionTemplate;
@@ -154,8 +159,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 userRoleRelMapper.insert(userRoleRel);
 
                 // 将用户角色信息存储到 Redis 中
-                List<Long> roles = new ArrayList<>();
-                roles.add(COMMON_USER_ROLE_ID);
+                RoleEntity role = roleMapper.selectById(COMMON_USER_ROLE_ID);
+                List<String> roles = new ArrayList<>(1);
+                roles.add(role.getRoleKey());
                 String userRolesKey = RedisKeyConstants.buildUserRolesKey(userId);
                 redisTemplate.opsForValue()
                     .set(userRolesKey, JsonUtils.toJsonString(roles));
@@ -167,7 +173,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
                 // 回滚 redis 自增ID
                 Long decrement = Long.valueOf(Objects.requireNonNull(redisTemplate.opsForValue()
                         .get(XIAOYI_ID_GENERATOR_KEY))
-                    .toString().trim());
+                    .toString()
+                    .trim());
                 if (decrement.compareTo(XIAOYI_ID_INITIAL_VALUE) > 0) {
                     log.error("==> 用户注册异常，回滚redis自增ID: {}", decrement);
                     redisTemplate.opsForValue()
@@ -187,8 +194,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         String userRolesKey = RedisKeyConstants.buildUserRolesKey(userId);
         Boolean hasKey = redisTemplate.hasKey(userRolesKey);
         if (!hasKey) {
-            List<Long> roles = userRoleRelMapper.selectByUserId(userId);
-            redisTemplate.opsForValue().set(userRolesKey,JsonUtils.toJsonString(roles));
+            List<String> roles = roleMapper.selectRoleKeyByUserId(userId);
+            redisTemplate.opsForValue()
+                .set(userRolesKey, JsonUtils.toJsonString(roles));
         }
     }
 }

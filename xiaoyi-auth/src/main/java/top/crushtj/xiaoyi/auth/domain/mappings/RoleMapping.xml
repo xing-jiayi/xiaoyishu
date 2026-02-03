@@ -20,4 +20,10 @@
         WHERE status = 1
           AND is_deleted = 0
     </select>
+    <select id="selectRoleKeyByUserId" resultType="java.lang.String">
+        SELECT r.role_key
+        FROM t_role r
+                 LEFT JOIN t_user_role_rel urr ON r.id = urr.role_id
+        WHERE urr.user_id = #{userId}
+    </select>
 </mapper>

@@ -21,5 +21,7 @@ public interface RoleMapper extends BaseMapper<RoleEntity> {
      */
     List<RoleEntity> selectEnabledRoleList();
 
+    List<String> selectRoleKeyByUserId(Long userId);
+
 }
 

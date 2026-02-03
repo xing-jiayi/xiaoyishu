@@ -88,27 +88,27 @@ public class PushRolePermissions2RedisRunner implements ApplicationRunner {
                     .collect(Collectors.toMap(PermissionEntity::getId, permissionEntity -> permissionEntity));
 
                 // 构建角色 ID 和权限 DO 列表的映射关系
-                Map<Long, List<PermissionEntity>> roleIdPermissionMap = new HashMap<>();
+                Map<String, List<String>> roleIdPermissionMap = new HashMap<>();
                 roleList.forEach(role -> {
                     Long roleId = role.getId();
                     //获取角色对应的权限id列表
                     List<Long> permissionIds = roleIdPermissionIdsMap.get(roleId);
                     if (CollUtil.isNotEmpty(permissionIds)) {
-                        List<PermissionEntity> perDOS = Lists.newArrayList();
+                        List<String> permissionKeys = Lists.newArrayList();
                         permissionIds.forEach(permissionId -> {
                             // 根据权限 ID 获取具体的权限 DO 对象
                             PermissionEntity permissionDO = permissionIdEntityMap.get(permissionId);
                             if (Objects.nonNull(permissionDO)) {
-                                perDOS.add(permissionDO);
+                                permissionKeys.add(permissionDO.getPermissionKey());
                             }
                         });
-                        roleIdPermissionMap.put(roleId, perDOS);
+                        roleIdPermissionMap.put(role.getRoleKey(), permissionKeys);
                     }
                 });
 
                 // 将角色 ID 和权限 DO 列表的映射关系写入 Redis
-                roleIdPermissionMap.forEach((roleId, permission) -> {
-                    String key = RedisKeyConstants.buildRolePermissionsKey(roleId);
+                roleIdPermissionMap.forEach((roleKey, permission) -> {
+                    String key = RedisKeyConstants.buildRolePermissionsKey(roleKey);
                     redisTemplate.opsForValue()
                         .set(key, JsonUtils.toJsonString(permission));
                 });
