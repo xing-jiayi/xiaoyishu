@@ -1,5 +1,7 @@
 package top.crushtj.xiaoyi.gateway.exception;
 
+import cn.dev33.satoken.exception.NotLoginException;
+import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.SaTokenException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
@@ -43,9 +45,17 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
         if (ex instanceof SaTokenException) { // Sa-Token 异常
             // 权限认证失败时，设置 401 状态码
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
-            // 构建响应结果
-            result = Response.failure(ResponseCodeEnum.UNAUTHORIZED.getErrorCode(),
-                ResponseCodeEnum.UNAUTHORIZED.getErrorMessage());
+            if (ex instanceof NotLoginException){
+                // 构建响应结果
+                result = Response.failure(ResponseCodeEnum.UNAUTHORIZED.getErrorCode(),
+                    ex.getMessage());
+            }else if (ex instanceof NotPermissionException) {
+                result = Response.failure(ResponseCodeEnum.UNAUTHORIZED.getErrorCode(),
+                    ResponseCodeEnum.UNAUTHORIZED.getErrorMessage());
+            } else {
+                result = Response.failure(ResponseCodeEnum.SYSTEM_ERROR);
+            }
+
         } else { // 其他异常，则统一提示 “系统繁忙” 错误
             result = Response.failure(ResponseCodeEnum.SYSTEM_ERROR);
         }

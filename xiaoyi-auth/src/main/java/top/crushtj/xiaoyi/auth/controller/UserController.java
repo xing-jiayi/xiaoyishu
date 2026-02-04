@@ -3,10 +3,7 @@ package top.crushtj.xiaoyi.auth.controller;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.crushtj.framework.biz.operationlog.aspect.ApiOperationLog;
 import top.crushtj.framework.common.response.Response;
 import top.crushtj.xiaoyi.auth.model.vo.user.UserLoginReqVO;
@@ -36,7 +33,7 @@ public class UserController {
 
     @PostMapping("/logout")
     @ApiOperationLog(description = "用户登出")
-    public Response<Void> logout() {
+    public Response<Void> logout(@RequestHeader("userId") String userId) {
         // todo 实现用户登出逻辑
         return Response.success();
     }
